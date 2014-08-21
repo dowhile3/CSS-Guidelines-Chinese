@@ -101,5 +101,36 @@ CSS 指南是只是多种风格指南中的一个，其中和方法、技巧和�
  * Text.................Text helpers.
  */
 ```
+每一个项目对应一个章节
 
+大的项目，目录的内容自然就大，但是仍然可以给开发者提供一个非常清晰的视觉：这是做啥的？以及为什么要用他。
 
+####80字符宽
+
+尽可能的限制 CSS 的行宽在 80 字符之内，原因是：
+
+* 方便并列展示多个文件。
+* 在 Github 等网站或终端中查看 CSS。
+* 评论在这种宽度下看起来较合适
+
+```CSS
+/**
+ * I am a long-form comment. I describe, in detail, the CSS that follows. I am
+ * such a long comment that I easily break the 80 character limit, so I am
+ * broken across several lines.
+ */
+```
+像 URL，渐变语法等必须要保持在一行中，我们不必担心这种情况。
+
+####标题
+
+CSS 项目中的每一个主要栏目都需要附上标题：
+```CSS
+/*------------------------------------*\
+    #SECTION-TITLE
+\*------------------------------------*/
+
+.selector {}
+```
+
+Begin every new major section of a CSS project with a title:
