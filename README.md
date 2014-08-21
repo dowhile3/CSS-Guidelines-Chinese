@@ -212,3 +212,66 @@ CSS 项目中的每一个主要栏目都需要附上标题：
 * 闭大括号没有自起一行
 * 最后一个声明尾部的半冒号缺失。
 * 冒号后无空格。
+
+####多行CSS
+
+除了非常特殊的情况，CSS 应该分多行写。这样做有许多好处：
+
+* 因为每一段功能在自己行上，因此能减少合并冲突的机会。
+* 更「真实」和可靠的 diffs，因为每行只有一个变动，
+
+如果规则只有一行声明，那么就不必再起行，例子见下
+```CSS
+.icon {
+    display: inline-block;
+    width:  16px;
+    height: 16px;
+    background-image: url(/img/sprite.svg);
+}
+
+.icon--home     { background-position:   0     0  ; }
+.icon--person   { background-position: -16px   0  ; }
+.icon--files    { background-position:   0   -16px; }
+.icon--settings { background-position: -16px -16px; }
+```
+单行的好处是：These types of ruleset benefit from being single-lined because
+
+* 依然符合「每行一个变动」的规则
+* 因为他们彼此相似，因此不需要像其他的规则那样细读，看 selector 比看声明更重要。
+
+####缩进
+
+和缩进独立的声明类似，缩进整个规则块能显示他们之间的关系，例如：
+```CSS
+.foo {}
+
+    .foo__bar {}
+
+        .foo__baz {}
+```
+这么做，开发者一眼就能看到， .foo__baz {} 在 .foo_bar {} 内， .foo__bar{} 在 .foo{} 内。
+
+这种模拟 DOM 分层的办法，让开发者不要看到 HTML 也能够了解 class 的信息。
+
+####缩进 SASS
+SASS提供了嵌套的功能，例如：
+```SASS
+.foo {
+    color: red;
+
+    .bar {
+        color: blue;
+    }
+
+}
+```
+编译了后会得到
+```CSS
+.foo { color: red; }
+.foo .bar { color: blue; }
+```
+缩进 SASS 时，我们仍用 4 个空格。嵌套规则的前后各留一个空格。
+
+N.B. 在 SASS 中要避免嵌套，Specificity 一章有更多的解释。
+
+####对齐
