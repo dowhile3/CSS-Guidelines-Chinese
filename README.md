@@ -1,6 +1,7 @@
 CSS-Guidelines-Chinese
-原文来自 http://cssguidelin.es/
-版权所有 Harry Roberts
+原文来自： http://cssguidelin.es/ 
+版权所有： Harry Roberts
+
 ======================
 
 CSS Guidelines 中文版
