@@ -36,10 +36,70 @@ CSS Guidelines 中文版
  
 风格指南必须透过各种方式透彻的被理解，并且应用到每一个项目中，无论何时何地。任何违反指南的都需要纠正。
 
-Disclaimers免责声明
+####免责声明
 
 CSS 指南是只是多种风格指南中的一个，其中和方法、技巧和小贴士，我会真诚的推荐给我的客户和团队。当然是你个人的洗好和面临的情况可能不同，请自取所需。
 
 虽然这些指南参杂个人的看法，但是它们在多年里在大小项目中被反复的试错和精炼过。
 
 ================
+
+####语法和格式
+最简单的风格指南含有一系列的语法和格式。借助标准来写 CSS 意味着对团队所有成员来说，代码看上去和感觉上会很熟悉。
+
+而且，看上去干净的代码感觉也干净，这意味着更好的工作环境，并且也让团队的成员们来一起维护好这个环境。丑陋的代码会带来不好的习惯。
+
+在非常高的层级上，我们希望：At a very high-level, we want
+
+* 4 空格缩进，不用 tab。
+* 每行 80 字符宽
+* 多行 CSS
+* 合理使用空格
+
+但是，这些都不是重要的，重要的是持之以恒。
+
+####多文件Multiple Files
+
+随着预处理器的流行，开发者越来越经常把 CSS 分割成多个文件。
+
+即使不使用预处理器，把代码分割成独立的区块后再重组也是个好注意。
+
+无论什么原因，假如你不用多个文件，下一章的内容需要做些许调整来满足你的习惯。
+
+####目录Table of Contents
+
+虽然打理目录需要花费较多的精力，但是它带来的好处大大超过复旦。细心的开发者不断更新文档，这是值得的。一份最新的目录能够告诉团队，这个 CSS 项目里有什么，做什么，次序如何。
+
+一份简单的目录能够按顺序指出不同的栏目做什么，并给出一份总结，例如
+
+```CSS
+/**
+ * CONTENTS
+ *
+ * SETTINGS
+ * Global...............Globally-available variables and config.
+ *
+ * TOOLS
+ * Mixins...............Useful mixins.
+ *
+ * GENERIC
+ * Normalize.css........A level playing field.
+ * Box-sizing...........Better default `box-sizing`.
+ *
+ * BASE
+ * Headings.............H1–H6 styles.
+ *
+ * OBJECTS
+ * Wrappers.............Wrapping and constraining elements.
+ *
+ * COMPONENTS
+ * Page-head............The main page header.
+ * Page-foot............The main page footer.
+ * Buttons..............Button elements.
+ *
+ * TRUMPS
+ * Text.................Text helpers.
+ */
+```
+
+
