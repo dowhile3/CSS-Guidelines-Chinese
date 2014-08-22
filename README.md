@@ -452,8 +452,159 @@ CSS 需要更多的评论。
  */
 ```
 
-这种级别的细节应该应用到任何状态、改变、情况、处理时的代码描述。
+重要的代码都要这么做。
 
 ####对象扩展指针
 
-When working across multiple partials, or in an OOCSS manner, you will often find that rulesets that can work in conjunction with each other are not always in the same file or location. For example, you may have a generic button object—which provides purely structural styles—which is to be extended in a component-level partial which will add cosmetics. We document this relationship across files with simple object–extension pointers. In the object file:
+当横跨多个部分，或者应用了 OOCSS 的方法时，你通常会发觉相互影响的规则通常不在同一个文件或者地方。例如，有一个通用的按钮对象，只提供纯粹的结构样式，它还有一个扩展的对象，用来加上装饰效果。用简单的对象扩展指针来记录这种关系。在对象文件中：
+```CSS
+/**
+ * Extend `.btn {}` in _components.buttons.scss.
+ */
+
+.btn {}
+```
+在你的主题文件中：
+```CSS
+/**
+ * These rules extend `.btn {}` in _objects.buttons.scss.
+ */
+
+.btn--positive {}
+
+.btn--negative {}
+```
+对不熟悉项目多个部分关系的开发者而言，或者希望了解样式继承规则的人来说，这种简单、省事的注释可以节约很多精力。
+
+####低级
+
+有时候我们想评论特定的声明，可以用反向脚注，以下是一个大型网站头部的脚注例子：
+
+```CSS
+/**
+ * Large site headers act more like mastheads. They have a faux-fluid-height
+ * which is controlled by the wrapping element inside it.
+ *
+ * 1. Mastheads will typically have dark backgrounds, so we need to make sure
+ *    the contrast is okay. This value is subject to change as the background
+ *    image changes.
+ * 2. We need to delegate a lot of the masthead’s layout to its wrapper element
+ *    rather than the masthead itself: it is to this wrapper that most things
+ *    are positioned.
+ * 3. The wrapper needs positioning context for us to lay our nav and masthead
+ *    text in.
+ * 4. Faux-fluid-height technique: simply create the illusion of fluid height by
+ *    creating space via a percentage padding, and then position everything over
+ *    the top of that. This percentage gives us a 16:9 ratio.
+ * 5. When the viewport is at 758px wide, our 16:9 ratio means that the masthead
+ *    is currently rendered at 480px high. Let’s…
+ * 6. …seamlessly snip off the fluid feature at this height, and…
+ * 7. …fix the height at 480px. This means that we should see no jumps in height
+ *    as the masthead moves from fluid to fixed. This actual value takes into
+ *    account the padding and the top border on the header itself.
+ */
+
+.page-head--masthead {
+    margin-bottom: 0;
+    background: url(/img/css/masthead.jpg) center center #2e2620;
+    @include vendor(background-size, cover);
+    color: $color-masthead; /* [1] */
+    border-top-color: $color-masthead;
+    border-bottom-width: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
+
+    @include media-query(lap-and-up) {
+        background-image: url(/img/css/masthead-medium.jpg);
+    }
+
+    @include media-query(desk) {
+        background-image: url(/img/css/masthead-large.jpg);
+    }
+
+    > .wrapper { /* [2] */
+        position: relative; /* [3] */
+        padding-top: 56.25%; /* [4] */
+
+        @media screen and (min-width: 758px) { /* [5] */
+            padding-top: 0; /* [6] */
+            height: $header-max-height - double($spacing-unit) - $header-border-width; /* [7] */
+        }
+
+    }
+
+}
+```
+
+这类注释让我们可以把所有的文档放在一个地方，同时又可以指向不同的规则。
+
+####预处理器评论
+预处理器有不编译评论的选项，也可以用这些评论来记录那些不会编译入 CSS 的代码。如果代码需要编译，那么对应的注释也要编译。如下是正确的例子：
+```CSS
+// Dimensions of the @2x image sprite:
+$sprite-width:  920px;
+$sprite-height: 212px;
+
+/**
+ * 1. Default icon size is 16px.
+ * 2. Squash down the retina sprite to display at the correct size.
+ */
+.sprite {
+    width:  16px; /* [1] */
+    height: 16px; /* [1] */
+    background-image: url(/img/sprites/main.png);
+    background-size: ($sprite-width / 2 ) ($sprite-height / 2); /* [2] */
+}
+```
+
+变量不会编译到 CSS，而 CSS 代码会编译出来，这意味着当我们 debug 的时候只有正确相关的信息。
+
+####移除评论
+
+无须多言，生产环境不需要评论，所有 CSS 都必须最小化。
+
+==============
+
+####命名规则
+这个规则的用处是使得你的代码更严格，更透明，更富含信息。
+
+一个好的命名规则会告诉你和你的团队：
+
+一个 class 有什么用处
+class 用在哪好
+class 和哪些东西关联
+我采用的命名规则很简单，用 - 号，如果遇到更复杂的代码用 BEM 的命名规则。
+
+值得注意的是明明规则不仅对 CSS 开发有益，对 HTML 也有益处。
+
+####用-号分段
+
+所有的字符串都用 - 号分段，例如
+```CSS
+.page-head {}
+
+.sub-content {}
+```
+不用骆驼拼写法和下划线，以下是错的：
+```CSS
+.pageHead {}
+
+.sub_content {}
+```
+####BEM类命名法
+对于大型、复杂的，需要多个 class 的 UI，我们使用 BEM 类命名规则。
+
+BEM 的意思是块、元素、调节器，是由 Yandex 的开发者提出的前端方法论。虽然 BEM 完全是方法论，但是在这里我们只关注命名规则。原理是一样的，但是实际的语法会稍微偏差。
+
+BEM 把组件的 class 分成三种：
+
+块：组件的唯一的根
+元素：块的一部分
+调节器：块的变种或者拓展。
+
+例如
+```CSS
+.person {}
+.person__head {}
+.person--tall {}
+
+```
