@@ -61,7 +61,7 @@ CSS 指南是只是多种风格指南中的一个，其中和方法、技巧和�
 
 但是，这些都不是重要的，重要的是持之以恒。
 
-####多文件Multiple Files
+####多文件
 
 随着预处理器的流行，开发者越来越经常把 CSS 分割成多个文件。
 
@@ -69,7 +69,7 @@ CSS 指南是只是多种风格指南中的一个，其中和方法、技巧和�
 
 无论什么原因，假如你不用多个文件，下一章的内容需要做些许调整来满足你的习惯。
 
-####目录Table of Contents
+####目录
 
 虽然打理目录需要花费较多的精力，但是它带来的好处大大超过复旦。细心的开发者不断更新文档，这是值得的。一份最新的目录能够告诉团队，这个 CSS 项目里有什么，做什么，次序如何。
 
@@ -275,3 +275,91 @@ SASS提供了嵌套的功能，例如：
 N.B. 在 SASS 中要避免嵌套，Specificity 一章有更多的解释。
 
 ####对齐
+对齐声明中常见和相关的字符串，例如：
+```
+.foo {
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+}
+
+.bar {
+    position: absolute;
+    top:    0;
+    right:  0;
+    bottom: 0;
+    left:   0;
+    margin-right: -10px;
+    margin-left:  -10px;
+    padding-right: 10px;
+    padding-left:  10px;
+}
+
+```
+对使用支持栏编辑的开发者来说，这会更方便，他们可以一次性的修改多栏中的内容
+
+####有意义的空格
+
+和缩进类似，我们也可以在规则间加入任意或特定的空格。我们适应:
+
+相关的规则间空一行
+不很相关的规则间空二行
+新的栏目间空五行
+例如：
+```CSS
+/*------------------------------------*\
+    #FOO
+\*------------------------------------*/
+
+.foo {}
+
+    .foo__bar {}
+
+
+.foo--baz {}
+
+
+
+
+
+/*------------------------------------*\
+    #BAR
+\*------------------------------------*/
+
+.bar {}
+
+    .bar__baz {}
+
+    .bar__foo {}
+```
+两个规则之间必须要有空行，以下的是错误的：
+```CSS
+.foo {}
+    .foo__bar {}
+.foo--baz {}
+```
+
+####HTML
+因为 HTML 和 CSS 本质上互相搅和在一起，因此不谈 HTML 的语法和格式规范便显得有些奇怪。
+
+永远给参数加上引号，即便不加也可以。这样会减少出错的机会，并且对大多数开发者来说是更熟悉的格式。以下的是可用的：
+```CSS
+<div class=box>
+```
+但是这个格式更好
+```
+<div class="box">
+```
+以上的引号不是必须的，但为了安全还是加上它。
+
+当在一个 class 的参数中包含多个值的时候，用两个空格分隔他们：
+```CSS
+<div class="foo  bar">
+```
+当多 class 互相关联，用中括号来分组，例如：
+```CSS
+<div class="[ box  box--highlight ]  [ bio  bio--long ]">
+```
+This is not a firm recommendation, and is something I am still trialling myself, but it does carry a number of benefits. Read more in Grouping related classes in your markup.
+
+As with our rulesets, it is possible to use meaningful whitespace in your HTML. You can denote thematic breaks in content with five (5) empty lines, for example:
