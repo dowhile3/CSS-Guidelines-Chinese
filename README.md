@@ -360,6 +360,100 @@ N.B. 在 SASS 中要避免嵌套，Specificity 一章有更多的解释。
 ```CSS
 <div class="[ box  box--highlight ]  [ bio  bio--long ]">
 ```
-This is not a firm recommendation, and is something I am still trialling myself, but it does carry a number of benefits. Read more in Grouping related classes in your markup.
+我不强烈推荐这么做，也怀疑这种做法，但是这么做仍然是有一些好处的。想了解更多的话，请读[在文档中组合相关的 class](http://csswizardry.com/2014/05/grouping-related-classes-in-your-markup/) 。
 
-As with our rulesets, it is possible to use meaningful whitespace in your HTML. You can denote thematic breaks in content with five (5) empty lines, for example:
+和 CSS 规则相似，也可以在 HTML 中通过加空格来标记含义，例如，在区段间加入五行空行：
+
+```HTML
+<header class="page-head">
+    ...
+</header>
+
+
+
+
+
+<main class="page-content">
+    ...
+</main>
+
+
+
+
+
+<footer class="page-foot">
+    ...
+</footer>
+```
+用单行的空行来分割独立但不相关的区段，例如：
+```HTML
+<ul class="primary-nav">
+
+    <li class="primary-nav__item">
+        <a href="/" class="primary-nav__link">Home</a>
+    </li>
+
+    <li class="primary-nav__item  primary-nav__trigger">
+        <a href="/about" class="primary-nav__link">About</a>
+
+        <ul class="primary-nav__sub-nav">
+            <li><a href="/about/products">Products</a></li>
+            <li><a href="/about/company">Company</a></li>
+        </ul>
+
+    </li>
+
+    <li class="primary-nav__item">
+        <a href="/contact" class="primary-nav__link">Contact</a>
+    </li>
+
+</ul>
+```
+开发者一眼就能看到 DOM 的成分，也使得某些文本编辑器，例如 Vim 来操控用空行隔开的标记。
+
+####评论
+
+CSS 带来的精神上的负担是巨大的。有许多东西需要知道，有很多和项目有关的细节要去记，开发者遇到最糟糕的情况是面对其他人写的代码。记住自己的 class、规则、对象和助手不难，难得是理解其他人的。
+
+CSS 需要更多的评论。
+
+因为 CSS 是声明性的语言，所以很难透过字面意思，单单看 CSS 去了解它的含义
+
+* 有些 CSS 可能仰赖其他的代码
+* 某段代码对其他效果的影响
+* 代码的复用
+* 继承了怎样的样式（刻意或者无意）
+* 传递了怎样的样式（刻意或者无意）
+* 作者想把样式放在哪里
+
+这里甚至没有考量 CSS 的诸多奇异特性，例如多种 overflow 触发的块格式、或者某些 transform 属性触发硬件加速，这对接手的开发者来说更加的麻烦。
+
+因为 CSS 无法很好的描述自己的情况，这是一个非常需要注释的语言。
+
+一个规则是，注释任何一眼不能看穿的代码。意思就是，不需要告诉大家颜色的含义，但是如果使用 overflow: hidden 来去除浮动，而不是用来截去某个元素的 overflow，那么这就值得记录。
+
+
+####高层
+
+对于记录整个分段或组件的大块评论来说，使用 DocBlock 级的多行评论，每行 80 字符宽。
+
+这是来自 CSS Wizardry 网站中记录页头的真实例子：
+```CSS
+/**
+ * The site’s main page-head can have two different states:
+ *
+ * 1) Regular page-head with no backgrounds or extra treatments; it just
+ *    contains the logo and nav.
+ * 2) A masthead that has a fluid-height (becoming fixed after a certain point)
+ *    which has a large background image, and some supporting text.
+ *
+ * The regular page-head is incredibly simple, but the masthead version has some
+ * slightly intermingled dependency with the wrapper that lives inside it.
+ */
+```
+
+这种级别的细节应该应用到任何状态、改变、情况、处理时的代码描述。
+
+####对象扩展指针
+
+When working across multiple partials, or in an OOCSS manner, you will often find that rulesets that can work in conjunction with each other are not always in the same file or location. For example, you may have a generic button object—which provides purely structural styles—which is to be extended in a component-level partial which will add cosmetics. We document this relationship across files with simple object–extension pointers. In the object file:
